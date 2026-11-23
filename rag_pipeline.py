@@ -103,5 +103,13 @@ def build_chain():
 
 def answer_question(question, retriever, chain):
     docs = retriever.invoke(question)
-    answer = chain.invoke({"context": format_docs(docs), "question": question})
+
+    answer = chain.invoke({
+        "context": format_docs(docs),
+        "question": question
+    })
+
+    if answer.strip() == "I don't have enough information to answer.":
+        return answer, []
+
     return answer, docs
